@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 
 export default class itemItem extends Component {
+
+ 
   render() {
-    console.log(this.props);
+    console.log("onAddToCart",this.props.onAddToCart);
 
     return (
       <div>
@@ -17,8 +19,14 @@ export default class itemItem extends Component {
                       onClick={() => this.props.handelShoesClick(item)}
                       className="btn btn-primary"
                     >
-                      Add to Carts :
+                      View more
                       <i className="fa-solid fa-cart-shopping "></i>
+                    </button>
+                    <button
+                      onClick={() => this.props.onAddToCart(item)}
+                      className="btn btn-warning mx-3"
+                    >
+                      Add To Cart
                     </button>
                   </div>
                 );

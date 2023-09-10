@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import listShoes from "./Data";
 import ShoesItem from "./ShoesItem";
 import ShoesDetail from "./ShoesDetail";
+import Cart from "./Cart";
 export default class Shoes extends Component {
   state = {
     data: {
@@ -16,10 +17,39 @@ export default class Shoes extends Component {
       quantity: 995,
       image: "http://svcy3.myclass.vn/images/adidas-prophere.png",
     },
+    isShownModal: false,
+    listShoesCart: [],
   };
   handelOnClick = (item) => {
     this.setState({
       data: item,
+    });
+  };
+  // cart
+  showModal = () => {
+    this.setState({
+      isShownModal: true,
+    });
+  };
+  handelCloseMOdal = () => {
+    this.setState({
+      isShownModal: false,
+    });
+  };
+  handelAddToCart = (item) => {
+    console.log("handelAddToCart", item);
+    // this.props.onAddToCart(item)
+    const updatedCart = [...this.state.listShoesCart, item];
+    this.setState({
+      listShoesCart: updatedCart,
+    });
+  };
+
+  removeFromCart = (index) => {
+    const updatedCart = [...this.state.listShoesCart];
+    updatedCart.splice(index, 1);
+    this.setState({
+      listShoesCart: updatedCart,
     });
   };
 
@@ -27,8 +57,26 @@ export default class Shoes extends Component {
     return (
       <div>
         <h2 className="bg-danger">Shoes Exercise</h2>
-        <ShoesItem shoes={listShoes} handelShoesClick={this.handelOnClick} />
+        <button 
+          onClick={() => this.showModal()}
+          className="btn btn-danger my-5"
+        >
+          <i className="fa-regular fa-bag-shopping btn btn-warning"></i>
+        </button>
+        <ShoesItem
+          shoes={listShoes}
+          handelShoesClick={this.handelOnClick}
+          onAddToCart={this.handelAddToCart}
+        />
         <ShoesDetail detail={this.state.data} />
+        {/* de cho no an di */}
+        {this.state.isShownModal && (
+          <Cart
+            onRemoveAddToCart={this.removeFromCart}
+            onCloseModal={this.handelCloseMOdal}
+            data={this.state.listShoesCart}
+          />
+        )}
       </div>
     );
   }
